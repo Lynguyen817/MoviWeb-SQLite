@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - MoviWeb App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Libre+Franklin:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Kanit&family=Libre+Franklin:wght@300&family=REM&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="homepage">
+        <nav class="navbar bg-body-tertiary">
+          <div class="container-fluid">
+            <form action="/search_movie" method="GET" class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Enter a movie name" aria-label="Search" id="title" name="title" required >
+              <button class="btn btn-outline-success" type="submit" value="Search">Search</button>
+            </form>
+          </div>
+        </nav>
+
+        <h1> Welcome to User Movie App</h1>
+            <a href="/add_user" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Add a User</a>
+            <h2><a href="/users">Users</a></h2>
+            <ul>
+                {% for user in users %}
+                    <li>{{ user.name }} <br>
+                        <a href="/users/{{ user.id }}/movies">Favorite Movies</a> <br>
+                        <a href="/users/{{ user.id }}/add_movie">Add Movie</a>
+                    </li>
+                {% endfor %}
+            </ul>
+</body>
+</html>

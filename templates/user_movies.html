@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>User - Favorite Movies</title>
+</head>
+<body class="movies-list">
+    <p><a href="{{ '/users' }}"><--Back to Home Page</a></p>
+    <h1>Favorite Movies</h1>
+    {% if list_of_user_movies %}
+        <ul class="row row-cols-3 text-center">
+            {% for movie in list_of_user_movies %}
+                <li class="movie-info">
+                    <strong class="movie-name">{{ movie.name }}</strong><br>
+                    <img src="{{ movie.image }}" alt="{{ movie.name }}"><br>
+                    <em>Director: {{ movie.director}}</em><br>
+                    <em>Year: {{ movie.year}}</em><br>
+                    <em>Rating: {{ movie.rating}}</em><br>
+                    <a href="{{ url_for('update_movie', user_id=user_id, movie_id=movie['id']) }}">Edit</a> |
+                    <a href="{{ url_for('delete_movie', user_id=user_id, movie_id=movie['id']) }}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No movies found for this user.</p>
+    {% endif %}
+</body>
+</html>

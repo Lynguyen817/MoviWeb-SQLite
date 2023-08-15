@@ -1,0 +1,144 @@
+:root {
+    --heading-font-family: 'Kanit', sans-serif;
+    --default-font-family: 'Libre Franklin', sans-serif;
+    --title-font-family: 'Josefin Sans', sans-serif;
+    --background-color: linear-gradient(blue, pink);
+    --background-image: url("../static/background_image.jpg");
+}
+
+
+body {
+  background: white;
+  color: pink;
+  font-family: var(--default-font-family);
+  font-size: 25px;
+}
+
+#navBarSearchForm:{
+   width: 100%;
+   height: 70px;
+   box-sizing: border-box;
+   margin-top: 10px;
+   margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.headline {
+    height: 300px;
+    margin-top: 10px;
+    padding: 20px;
+    font-weight: 600px;
+    text-align: left;
+}
+
+h1 {
+    font-family: var(--heading-font-family);
+    font-size: 60px;
+}
+
+h2 {
+    color: blue;
+    font-family: var(--heading-font-family);
+    font-size: 50px;
+}
+
+.list-movies-title {
+  padding: 10px 0;
+  background: #009B50;
+  color: white;
+  text-align: center;
+  font-size: 16pt;
+}
+
+.movies-list, .search-movie {
+    background: black;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 20px 30px 20px 30px;
+}
+
+.add-user, .add-movie, .edit-movie {
+    background: var(--background-color);
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 20px 30px 20px 30px;
+}
+
+.homepage, .delete-page {
+    background: var(--background-image);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.movie-grid {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 20px;
+  display: flex;
+  justify-content: left;
+}
+
+.movie-grid li {
+  padding: 10px 15px;
+  text-align: left;
+}
+
+.homepage {
+  grid-template-columns: 230px 230px 230px 230px;
+  width: 100%;
+  height: 800px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+.movie-info {
+    color: Pink;
+    font-size: 15px;
+    font-family: var(--default-font-family);
+}
+
+.movie-name {
+    color: Pink;
+    font-size: 30px;
+    font-family: var(--title-font-family);
+}
+
+.movie {
+  width: 162px;
+}
+
+.movie-title,
+.movie-year,
+.movie-rate {
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.movie-title {
+  margin-top: 10px;
+}
+
+.movie-rate,
+.movie-year {
+  color: #999;
+}
+
+.movie-poster {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    width: 128px;
+    height: 193px;
+}
+
+div {
+    display:block;
+    }
+
+ul {
+    list-style: none;
+}
