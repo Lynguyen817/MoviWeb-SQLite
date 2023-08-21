@@ -12,13 +12,13 @@
         <ul class="row row-cols-3 text-center">
             {% for movie in list_of_user_movies %}
                 <li class="movie-info">
-                    <strong class="movie-name">{{ movie.name }}</strong><br>
+                    <strong class="movie-name">{{ movie.title }}</strong><br>
                     <img src="{{ movie.image }}" alt="{{ movie.name }}"><br>
                     <em>Director: {{ movie.director}}</em><br>
                     <em>Year: {{ movie.year}}</em><br>
                     <em>Rating: {{ movie.rating}}</em><br>
-                    <a href="{{ url_for('update_movie', user_id=user_id, movie_id=movie['id']) }}">Edit</a> |
-                    <a href="{{ url_for('delete_movie', user_id=user_id, movie_id=movie['id']) }}">Delete</a>
+                    <a href="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}">Edit</a> |
+                    <a href="{{ url_for('delete_movie', user_id=user_id, movie_id=movie.id) }}">Delete</a>
                 </li>
             {% endfor %}
         </ul>

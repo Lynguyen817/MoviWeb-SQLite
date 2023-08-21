@@ -1,11 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for
-from datamanager.json_data_manager import JSONDataManager
+from datamanager.sqlite_data_manager import *
 from flask_bootstrap import Bootstrap
+
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
-data_manager = JSONDataManager('movies.json')
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///moviwebapp.db'
+
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+
+#db = SQLAlchemy(app)
+data_manager = SQLiteDataManager(db)
 
 @app.route('/')
 def home():
@@ -67,7 +75,7 @@ def add_user():
         new_user_id = len(users) + 1
 
         # Add the new user to the data manager
-        data_manager.add_user(new_user_id, username)
+        data_manager.add_user(new_user_id, username, email)
         return redirect(url_for('list_users'))
 
     # Else, it's GET method
@@ -84,13 +92,13 @@ def add_movie(user_id):
             return "Please provide a movie title.", 400
 
         # Call the add_movie method of the data_manager to add the movie to the user's list
-        new_movie_list = data_manager.add_movie(user_id, movie_title)
-        print(new_movie_list)
+        data_manager.add_movie(user_id, movie_title)
+        return redirect(url_for('user_movies', user_id=user_id))
 
-        if new_movie_list is not None:
-            return redirect(url_for('user_movies', user_id=user_id, new_movie_list=new_movie_list))
-        else:
-            return "User not found"
+        # if new_movie_list is not None:
+        #     return redirect(url_for('user_movies', user_id=user_id, new_movie_list=new_movie_list))
+        # else:
+        #     return "User not found"
 
     # It's GET method
     return render_template('add_movie.html', user_id=user_id)
@@ -108,7 +116,7 @@ def delete_movie(user_id, movie_id):
 
     # Get the movie data
     list_of_user_movies = data_manager.get_user_movies(user_id)
-    movie = next((m for m in list_of_user_movies if m["id"] == int(movie_id)), None)
+    movie = next((m for m in list_of_user_movies if m.id == int(movie_id)), None)
 
     if not movie:
         return "Movie not found"

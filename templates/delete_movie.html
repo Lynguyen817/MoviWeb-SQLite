@@ -7,12 +7,12 @@
 </head>
 <body class="delete-page">
     <h1>Delete Movie</h1>
-    <p>Are you sure you want to delete "{{ movie.name }}"?</p>
-    <h2>{{ movie.name }}</h2>
+    <p>Are you sure you want to delete "{{ movie.title }}"?</p>
+    <h2>{{ movie.title }}</h2>
     <p><strong>Director:</strong> {{ movie.director }}</p>
     <p><strong>Year:</strong> {{ movie.year }}</p>
     <p><strong>Rating:</strong> {{ movie.rating }}</p> <br>
-    <form method="post" action="{{ url_for('delete_movie', user_id=user_id, movie_id=movie['id']) }}">
+    <form method="post" action="{{ url_for('delete_movie', user_id=user_id, movie_id=movie.id) }}">
         <input type="submit"  class="btn btn-danger" value="Delete">
     </form>
     <br>
