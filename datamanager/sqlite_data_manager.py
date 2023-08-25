@@ -76,12 +76,16 @@ class SQLiteDataManager(DataManagerInterface):
 
     def update_movie(self, user_id, movie_id, new_director, new_year, new_rating):
         """Update an existing movie."""
-        existing_movie = Movie.query.get(movie.id)
+        existing_movie = Movie.query.get(movie_id)
         if existing_movie:
             # Update the attributes of the existing movie with the new values
-            existing_movie.title = movie.title
-            existing_movie.genre = movie.genre
+            existing_movie.director = new_director
+            existing_movie.year = new_year
+            existing_movie.rating = new_rating
             self.db.session.commit()
+            return True
+        else:
+            return False
 
     def delete_movie(self, user_id, movie_id):
         """Delete a movie from the database."""
