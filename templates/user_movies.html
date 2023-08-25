@@ -13,7 +13,7 @@
             {% for movie in list_of_user_movies %}
                 <li class="movie-info">
                     <strong class="movie-name">{{ movie.title }}</strong><br>
-                    <img src="{{ movie.image }}" alt="{{ movie.name }}"><br>
+                    <img src="{{ movie.poster }}" alt="{{ movie.title }}"><br>
                     <em>Director: {{ movie.director}}</em><br>
                     <em>Year: {{ movie.year}}</em><br>
                     <em>Rating: {{ movie.rating}}</em><br>

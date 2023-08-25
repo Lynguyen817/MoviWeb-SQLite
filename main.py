@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from datamanager.sqlite_data_manager import *
 from flask_bootstrap import Bootstrap
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
@@ -12,8 +13,9 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-#db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 data_manager = SQLiteDataManager(db)
+
 
 @app.route('/')
 def home():
@@ -82,11 +84,28 @@ def add_user():
     return render_template('add_user.html')
 
 
+@app.route('/users/<user_id>/delete_user', methods=['GET', 'POST'])
+def delete_user(user_id):
+    """Delete a user from the list."""
+    user = data_manager.get_user(user_id)
+    if request.method == 'POST':
+        deleted = data_manager.delete_user(user_id)
+        if deleted:
+            return redirect(url_for('list_users'))
+        else:
+            return "User not found"
+    return render_template('delete_user.html', user=user)
+
+
 @app.route('/users/<user_id>/add_movie', methods=['GET', 'POST'])
 def add_movie(user_id):
     """Adds a new movie to a user's favorite movies list."""
     if request.method == 'POST':
         movie_title = request.form.get('title')
+        # poster_url = request.form.get('poster_url')
+        # director = request.form.get('director')
+        # year = request.form.get('year')
+        # rating = request.form.get('rating')
 
         if not movie_title:
             return "Please provide a movie title.", 400
@@ -94,11 +113,6 @@ def add_movie(user_id):
         # Call the add_movie method of the data_manager to add the movie to the user's list
         data_manager.add_movie(user_id, movie_title)
         return redirect(url_for('user_movies', user_id=user_id))
-
-        # if new_movie_list is not None:
-        #     return redirect(url_for('user_movies', user_id=user_id, new_movie_list=new_movie_list))
-        # else:
-        #     return "User not found"
 
     # It's GET method
     return render_template('add_movie.html', user_id=user_id)
@@ -110,7 +124,7 @@ def delete_movie(user_id, movie_id):
     if request.method == 'POST':
         deleted = data_manager.delete_movie(user_id, movie_id)
         if deleted:
-            return redirect(url_for('user_movies', user_id=user_id))
+            return redirect(url_for('user_movies', user_id=user_id), movie_id=movie_id)
         else:
             return "Movie not found"
 
@@ -140,7 +154,7 @@ def update_movie(user_id, movie_id):
 
     # Get the movie data
     list_of_users_movies = data_manager.get_user_movies(user_id.strip("<>"))
-    movie = next((m for m in list_of_users_movies if m["id"] == int(movie_id)), None)
+    movie = next((m for m in list_of_users_movies if m.id == int(movie_id)), None)
 
     if not movie:
         return "Movie not found"

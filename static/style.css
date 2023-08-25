@@ -67,10 +67,11 @@ h2 {
     margin: 20px 30px 20px 30px;
 }
 
-.homepage, .delete-page {
+.homepage, .delete-page, .delete_user {
     background: var(--background-image);
     background-size: cover;
     background-repeat: no-repeat;
+    margin-left: 25px;
 }
 
 .movie-grid {

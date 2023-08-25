@@ -2,8 +2,10 @@ from flask_sqlalchemy import SQLAlchemy
 from .data_manager_interface import DataManagerInterface
 import requests
 import json
+#from flask_migrate import Migrate
 
 db = SQLAlchemy()
+#migrate = Migrate(db)
 
 
 class SQLiteDataManager(DataManagerInterface):
@@ -26,10 +28,12 @@ class SQLiteDataManager(DataManagerInterface):
             return None
 
     def get_all_users(self):
+        """Get all users."""
         users = User.query.all()
         return users
 
     def get_user_movies(self, user_id):
+        """Get all user's favorite movies."""
         user = User.query.get(user_id)
         if user:
             movies = user.favorites
@@ -38,11 +42,32 @@ class SQLiteDataManager(DataManagerInterface):
         return movies
 
     def add_user(self, user_id, name, email):
+        """Add a new user."""
         new_user = User(id=user_id, username=name, email=email)
         self.db.session.add(new_user)
         self.db.session.commit()
 
+    def get_user(self, user_id):
+        """Get a specific user by user_id."""
+        user = User.query.get(user_id)
+        return user
+
+    def delete_user(self, user_id):
+        """Delete a user."""
+        user_to_delete = User.query.get(user_id)
+        if user_to_delete:
+            # Clear the user ID from associated movies
+            for movie in user_to_delete.favorites:
+                movie.user_id = None
+                self.db.session.delete(movie)
+            self.db.session.delete(user_to_delete)
+            self.db.session.commit()
+            return True
+        else:
+            return False
+
     def add_movie(self, user_id, movie_title):
+        """Add a new movie to a user's favorite movies list."""
         user = User.query.get(user_id)
         if user:
             new_movie = Movie(title=movie_title, user=user)
@@ -50,6 +75,7 @@ class SQLiteDataManager(DataManagerInterface):
             self.db.session.commit()
 
     def update_movie(self, user_id, movie_id, new_director, new_year, new_rating):
+        """Update an existing movie."""
         existing_movie = Movie.query.get(movie.id)
         if existing_movie:
             # Update the attributes of the existing movie with the new values
@@ -58,6 +84,7 @@ class SQLiteDataManager(DataManagerInterface):
             self.db.session.commit()
 
     def delete_movie(self, user_id, movie_id):
+        """Delete a movie from the database."""
         movie_to_delete = Movie.query.get(movie_id)
         if movie_to_delete:
             self.db.session.delete(movie_to_delete)
@@ -65,6 +92,7 @@ class SQLiteDataManager(DataManagerInterface):
 
 
 class User(db.Model):
+    """Create a user table."""
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -76,10 +104,16 @@ class User(db.Model):
 
 
 class Movie(db.Model):
+    """Create a movie table."""
     __tablename__ = 'movies'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # poster_url = db.Column(db.String(200))
+    # director = db.Column(db.String(120), nullable=False)
+    # year = db.Column(db.Integer, nullable=False)
+    # rating = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
     def __repr__(self):
         return f'<Movie {self.title}>'
+
