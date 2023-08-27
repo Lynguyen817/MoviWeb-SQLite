@@ -29,7 +29,7 @@
                     <li>{{ user.username }} <br>
                         <a href="/users/{{ user.id }}/movies">Favorite Movies</a> <br>
                         <a href="/users/{{ user.id }}/add_movie">Add Movie</a><br>
-                        <a href="/users/{{ user.id }}/delete_user">Delete User</a>
+                        <a href="/users/{{ user.id }}/delete_user" class="btn btn-danger">Delete User</a>
                     </li>
                 {% endfor %}
             </ul>

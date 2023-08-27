@@ -2,10 +2,8 @@ from flask_sqlalchemy import SQLAlchemy
 from .data_manager_interface import DataManagerInterface
 import requests
 import json
-#from flask_migrate import Migrate
 
 db = SQLAlchemy()
-#migrate = Migrate(db)
 
 
 class SQLiteDataManager(DataManagerInterface):
@@ -100,6 +98,9 @@ class SQLiteDataManager(DataManagerInterface):
         if movie_to_delete:
             self.db.session.delete(movie_to_delete)
             self.db.session.commit()
+            return True
+        else:
+            return False
 
 
 class User(db.Model):
