@@ -3,7 +3,6 @@ from datamanager.sqlite_data_manager import *
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 
-
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
@@ -30,7 +29,6 @@ def home():
 def search_movie():
     """Return a movie that the user searches."""
     title = request.args.get('title')
-    print(title)
     movie_data = data_manager.load_movies_data(title)
     print(movie_data)
 
@@ -99,20 +97,21 @@ def delete_user(user_id):
 
 @app.route('/users/<user_id>/add_movie', methods=['GET', 'POST'])
 def add_movie(user_id):
-    """Adds a new movie to a user's favorite movies list."""
+    """Search for a movie and add it to a user's favorite movies list."""
     if request.method == 'POST':
         movie_title = request.form.get('title')
-        # poster_url = request.form.get('poster_url')
-        # director = request.form.get('director')
-        # year = request.form.get('year')
-        # rating = request.form.get('rating')
 
         if not movie_title:
             return "Please provide a movie title.", 400
 
+        movie_data = data_manager.load_movies_data(movie_title)
+
         # Call the add_movie method of the data_manager to add the movie to the user's list
-        data_manager.add_movie(user_id, movie_title)
-        return redirect(url_for('user_movies', user_id=user_id))
+        if movie_data and movie_data.get('Response') == 'True':
+            data_manager.add_movie(user_id, movie_data)
+            return redirect(url_for('user_movies', user_id=user_id))
+        else:
+            return "Movie not found", 404
 
     # It's GET method
     return render_template('add_movie.html', user_id=user_id)
@@ -124,7 +123,7 @@ def delete_movie(user_id, movie_id):
     if request.method == 'POST':
         deleted = data_manager.delete_movie(user_id, movie_id)
         if deleted:
-            return redirect(url_for('user_movies', user_id=user_id), movie_id=movie_id)
+            return redirect(url_for('user_movies', user_id=user_id))
         else:
             return "Movie not found"
 

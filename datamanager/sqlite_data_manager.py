@@ -66,11 +66,18 @@ class SQLiteDataManager(DataManagerInterface):
         else:
             return False
 
-    def add_movie(self, user_id, movie_title):
+    def add_movie(self, user_id, movie_data):
         """Add a new movie to a user's favorite movies list."""
         user = User.query.get(user_id)
         if user:
-            new_movie = Movie(title=movie_title, user=user)
+            new_movie = Movie(
+                user=user,
+                title=movie_data["Title"],
+                poster_url=movie_data["Poster"],
+                director=movie_data["Director"],
+                year=movie_data["Year"],
+                rating=float(movie_data["imdbRating"])
+            )
             self.db.session.add(new_movie)
             self.db.session.commit()
 
@@ -112,10 +119,10 @@ class Movie(db.Model):
     __tablename__ = 'movies'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
-    # poster_url = db.Column(db.String(200))
-    # director = db.Column(db.String(120), nullable=False)
-    # year = db.Column(db.Integer, nullable=False)
-    # rating = db.Column(db.Float, nullable=False)
+    poster_url = db.Column(db.String(200))
+    director = db.Column(db.String(120))
+    year = db.Column(db.Integer)
+    rating = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
     def __repr__(self):
