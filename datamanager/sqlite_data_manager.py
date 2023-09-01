@@ -100,3 +100,23 @@ class SQLiteDataManager(DataManagerInterface):
         else:
             return False
 
+    def add_review(self, user_id, movie_id, review_text, rating):
+        """Add review to a movie."""
+        movie = Movie.query.get(movie_id)
+        if movie:
+            new_review = Review(user_id=user_id, movie_id=movie_id, review_text=review_text, rating=rating)
+            self.db.session.add(new_review)
+            self.db.session.commit()
+            return True
+        else:
+            return False
+
+    def user_reviews(self, user_id, movie_id):
+        """Show all the reviews of the movie"""
+        user = User.query.get(user_id)
+        movie = Movie.query.get(movie_id)
+        if user and movie:
+            reviews = Review.query.filter_by(user_id=user_id, movie_id=movie_id).all()
+        else:
+            reviews = []
+        return reviews

@@ -18,7 +18,8 @@
                     <em>Year: {{ movie.year}}</em><br>
                     <em>Rating: {{ movie.rating}}</em><br>
                     <a href="{{ url_for('update_movie', user_id=user_id, movie_id=movie.id) }}">Edit</a> |
-                    <a href="{{ url_for('delete_movie', user_id=user_id, movie_id=movie.id) }}">Delete</a>
+                    <a href="{{ url_for('delete_movie', user_id=user_id, movie_id=movie.id) }}">Delete</a> |
+                    <a href="{{ url_for('user_reviews', user_id=user_id, movie_id=movie.id) }}">Reviews</a>
                 </li>
             {% endfor %}
         </ul>

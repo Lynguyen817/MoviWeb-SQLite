@@ -60,14 +60,14 @@ h2 {
     margin: 20px 30px 20px 30px;
 }
 
-.add-user, .add-movie, .edit-movie {
+.add-user, .add-movie, .edit-movie, .add-review {
     background: var(--background-color);
     background-size: cover;
     background-repeat: no-repeat;
     margin: 20px 30px 20px 30px;
 }
 
-.homepage, .delete-page, .delete_user {
+.homepage, .delete-page, .delete_user, .user-reviews {
     background: var(--background-image);
     background-size: cover;
     background-repeat: no-repeat;

@@ -28,3 +28,18 @@ class Movie(db.Model):
 
     def __repr__(self):
         return f'<Movie {self.title}>'
+
+
+class Review(db.Model):
+    __tablename__ = 'reviews'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), nullable=False)
+    review_text = db.Column(db.String(500), nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+
+    user = db.relationship('User', backref='reviews')
+    movie = db.relationship('Movie', backref='reviews')
+
+    def __repr__(self):
+        return f'<Review{self.id}>'

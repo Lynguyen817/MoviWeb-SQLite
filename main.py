@@ -162,6 +162,36 @@ def update_movie(user_id, movie_id):
     return render_template('edit_movie.html', user_id=user_id, movie=movie)
 
 
+@app.route('/add_review/<user_id>/<movie_id>', methods=['GET', 'POST'])
+def add_review(user_id, movie_id):
+    """ Add a review to an existing movie"""
+    movie = Movie.query.get(movie_id)
+    if request.method == 'POST':
+        review_text = request.form.get('review_text')
+        rating = float(request.form.get('rating'))
+
+        # Call the add_review method
+        added = data_manager.add_review(user_id, movie_id, review_text, rating)
+        if added:
+            return redirect(url_for('user_reviews', user_id=user_id, movie_id=movie_id))
+        else:
+            return "Movie not found"
+
+    # It's a GET method, render the review submission form
+    return render_template('add_review.html', user_id=user_id, movie_id=movie_id, movie=movie)
+
+
+@app.route('/user_reviews/<user_id>/<movie_id>')
+def user_reviews(user_id, movie_id):
+    user = User.query.get(user_id)
+    movie = Movie.query.get(movie_id)
+    if user:
+        reviews = data_manager.user_reviews(user_id, movie_id)
+        return render_template('user_reviews.html', user=user, movie=movie, reviews=reviews)
+    else:
+        return "User or movie not found"
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
