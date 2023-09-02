@@ -6,23 +6,22 @@
     <title>User Reviews</title>
 </head>
 <body class="user-reviews">
-    <p><a href="{{ url_for('user_movies', user_id=user_id) }}"><--Back to movies list</a></p>
-    <h1>{{ user.username }}'s Reviews for {{ movie.title }}</h1>
+    <p><a href="/users/{{ user.id }}/movies"><--Back to movies list</a></p>
+    <h1>{{ user.username }}'s Reviews</h1><br>
+        <strong class="fs-1">{{ movie.title }}</strong><br>
+    <a href="/add_review/{{ user.id }}/{{ movie.id }}" class="btn btn-primary mt-3 mb-3 ">Add Review</a><br>
     {% if reviews %}
         <ul>
             {% for review in reviews %}
-                <li>
-                    <strong>{{ review.movie.title }}</strong><br>
-                    <a href="/add_review/<user_id>/<movie_id>" class="btn btn-primary">Add Review</a>
+                <li class="movie-item">
                     <p>" {{ review.review_text }}. "</p>
-                    <p>Rating: {{ review.rating }}</p>
+                    <p class="ms-4">Rating: {{ review.rating }}</p>
                 </li>
                 <small>-----------------------------</small>
             {% endfor %}
         </ul>
     {% else %}
         <p>No reviews available for {{ movie.title }}</p>
-        <a href="/add_review/<user_id>/<movie_id>" class="btn btn-primary">Add Review</a>
     {% endif %}
 </body>
 </html>

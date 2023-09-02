@@ -143,3 +143,15 @@ div {
 ul {
     list-style: none;
 }
+
+.movie-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border: none;
+    border-radius: 7px;
+    padding: 20px;
+    color: #F2D2BD;
+    background-color: #36454F;
+    box-shadow: var(--box-shadow);
+}
